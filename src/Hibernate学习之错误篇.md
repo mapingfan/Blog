@@ -22,6 +22,15 @@ EMPLOYEE
  
  2. `can not Locate of hibernate.cfg.xml in project`
 这个问题今天也遇到了（IDEA）环境下适用，别的工具不一定。正常来说，`hibernate.cfg.xml`是应该直接放在`src`目录底下的，但是今天死活找不到。后来在`src`目录下建议一个文件夹`resources`,并且把这个文件夹标记为`Resources`,然后就解决了。
+
+3. `Hibernate transaction not successfully started`
+今天遇到这个问题,记录一下.原因应该是`Hibernate`两次自动提交,从而导致两次提交.添加如下代码解决:
+```
+// commit only, if tx still hasn't been committed yet by Hibernate
+if (tx.getStatus().equals(TransactionStatus.ACTIVE)) { 
+    tx.commit();
+}
+```
  
 
   [1]: https://stackoverflow.com/questions/43716068/invalid-syntax-error-type-myisam-in-ddl-generated-by-hibernate
